@@ -12,7 +12,7 @@ for line in data_file.readlines():
 d_word_list= defaultdict(list)
 
 for k, v in data:
-	d_word_list[k].append(v)
+	d_word_list[k].append(v.strip())
 
 
 d_list= defaultdict(list)
@@ -22,4 +22,3 @@ for k, v in data:
 
 json.dump(d_word_list, open("word_list.txt",'w'))
 json.dump(d_list, open("list.txt",'w'))
-
