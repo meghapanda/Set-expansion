@@ -1,24 +1,19 @@
 from collections import defaultdict
 import json
+import gzip
+
 file='SampledWebList_SmallGraph.txt'
 #file='trail.txt'
 data_file= open(file, 'r')
-count=0
+lineNum = 100
+lineCounter = 0
 data=[]
-for line in data_file.readlines():
-	line=line.split('\t')
-	data.append(line)
-
 d_word_list= defaultdict(list)
+for line in data_file:
+	if lineCounter >= lineNum: break
+	lineCounter += 1
+	line = line.split('\t')
+	d_word_list[line[0]].append(line[1].strip())
 
-for k, v in data:
-	d_word_list[k].append(v.strip())
-
-
-d_list= defaultdict(list)
-
-for k, v in data:
-	d_list[v].append(k)
-
-json.dump(d_word_list, open("word_list.txt",'w'))
-json.dump(d_list, open("list.txt",'w'))
+json.dump(d_word_list, open("word_list_100.json",'w',),sort_keys=True, indent=4)
+json.dump(d_word_list.keys(), open("list_100.json",'w'),sort_keys=True, indent=4)
