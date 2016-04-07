@@ -1,3 +1,2 @@
-word_list.txt
-SampledWebList_SmallGraph.txt
-full_list_clean.txt
+*.txt
+*.json
