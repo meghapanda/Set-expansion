@@ -2,12 +2,12 @@ from collections import defaultdict
 import json
 import gzip
 
-debug = False
+debug = True
 def processBingData():
 	global debug
 	file='SampledWebList_SmallGraph.txt'
 	data_file= open(file, 'r')
-	lineNum = 100
+	lineNum = 1000
 	lineCounter = 0
 	data=[]
 	d_word_list= defaultdict(list)
@@ -16,7 +16,7 @@ def processBingData():
 		lineCounter += 1
 		line = line.split('\t')
 		d_word_list[line[0]].append(line[1].strip())
-	if DEBUG:
+	if debug:
 		json.dump(d_word_list, open("word_list_100.json",'w',),sort_keys=True, indent=4)
 		json.dump(d_word_list.keys(), open("list_100.json",'w'),sort_keys=True, indent=4)
 	else:
@@ -32,10 +32,11 @@ def processWikiData():
 			for elem in elems[1:]:
 				if elem == "": continue
 				try:
-					inveredTable[list_id].append(elem.strip())
+					inveredTable[elem.strip()].append(list_id)
 				except:
-					inveredTable[list_id] = [elem.strip()]
+					inveredTable[elem.strip()] = [list_id]
 	with open("full_list_inverted_table.txt",'w+') as f:
 		f.write(json.dumps(inveredTable,sort_keys=True, indent=4))
 if __name__ == "__main__":
 	processBingData()
+	processWikiData()
