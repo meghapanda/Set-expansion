@@ -3,11 +3,11 @@ import json
 import gzip
 
 debug = True
+lineNum = 1000
 def processBingData():
 	global debug
 	file='SampledWebList_SmallGraph.txt'
 	data_file= open(file, 'r')
-	lineNum = 1000
 	lineCounter = 0
 	data=[]
 	d_word_list= defaultdict(list)
@@ -25,8 +25,11 @@ def processBingData():
 def processWikiData():
 	file = "full_list_clean.txt"
 	inveredTable = {}
+	lineCounter = 0
 	with open(file) as f:
 		for line in f:
+			if debug and lineCounter >= lineNum: break
+			lineCounter += 1
 			elems = line.split('\t')
 			list_id = elems[0]
 			for elem in elems[1:]:
