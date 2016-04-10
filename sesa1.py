@@ -21,7 +21,7 @@ def relevance(set1,set2):
 		for j in range(0,len_set2):
 			score_temp=score_temp+similarity(data[set1[i]],data[set2[j]])
 	rel_score=score_temp/(len_set1*len_set1)
-	
+
 	return rel_score
 
 
@@ -33,7 +33,7 @@ def static_thresholding(data,seed_set):
 	R_new=[]
 	alpha=1
 	for index in range(0,len(data.keys())):
-		rel_score.append(relevance(seed_set,[data.keys()[index]])) 
+		rel_score.append(relevance(seed_set,[data.keys()[index]]))
 	sorted_term_rel = np.argsort(rel_score)[::-1]
 	rel_score_temp=np.array(rel_score).round(2)
 	#thresholding
@@ -65,12 +65,12 @@ def static_thresholding(data,seed_set):
 			print(R_old)
 			print(K)
 			break
-		
 
-		
 
-	
-	
+
+
+
+
 
 #main part
 file=open("word_list.txt")
@@ -78,12 +78,6 @@ json1_str = file.read()
 data=json.loads(json1_str)
 
 # seed_set=raw_input("Please Enter your seed set with tab in between each seed")
-seed_set='a	g'
+seed_set='a\tg'
 seed_set=seed_set.split("\t")
 static_thresholding(data,seed_set)
-
-
-
-
-
-

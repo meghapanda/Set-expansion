@@ -4,6 +4,7 @@ import gzip
 
 debug = False
 def processBingData():
+	global debug
 	file='SampledWebList_SmallGraph.txt'
 	data_file= open(file, 'r')
 	lineNum = 100
@@ -37,4 +38,4 @@ def processWikiData():
 	with open("full_list_inverted_table.txt",'w+') as f:
 		f.write(json.dumps(inveredTable,sort_keys=True, indent=4))
 if __name__ == "__main__":
-	processWikiData()
+	processBingData()
