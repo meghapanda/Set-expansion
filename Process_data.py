@@ -2,7 +2,7 @@ from collections import defaultdict
 import json
 import gzip
 
-debug = True
+debug = False
 lineNum = 1000
 def processBingData():
 	global debug
@@ -42,4 +42,4 @@ def processWikiData():
 		f.write(json.dumps(inveredTable,sort_keys=True, indent=4))
 if __name__ == "__main__":
 	processBingData()
-	processWikiData()
+	#processWikiData()
