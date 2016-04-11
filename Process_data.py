@@ -22,11 +22,15 @@ def processBingData():
 		except:
 			word_list[line[0]] = [line[1]]
 	if debug:
-		json.dump(d_word_list, open("word_list_100.json",'w',),sort_keys=True, indent=4)
-		json.dump(word_list, open("list_100.json",'w'),sort_keys=True, indent=4)
+		with open("word_list_100.json",'w',) as f:
+			json.dump(d_word_list, f,sort_keys=True, indent=4)
+		with open("list_100.json",'w') as f:
+			json.dump(word_list, f,sort_keys=True, indent=4)
 	else:
-		json.dump(d_word_list, open("word_list_ALL.json",'w',),sort_keys=True, indent=4)
-		json.dump(word_list, open("list_ALL.json",'w'),sort_keys=True, indent=4)
+		with open("word_list_ALL.json",'w',) as f:
+			json.dump(d_word_list, f,sort_keys=True, indent=4)
+		with open("list_ALL.json",'w') as f:
+			json.dump(word_list, f,sort_keys=True, indent=4)
 def processWikiData():
 	file = "full_list_clean.txt"
 	inveredTable = {}
@@ -50,5 +54,5 @@ def processWikiData():
 	with open("wiki_list.txt",'w+') as f:
 		f.write(json.dumps(word_list, sort_keys=True, indent=4))
 if __name__ == "__main__":
-	processBingData()
-	#processWikiData()
+	#processBingData()
+	processWikiData()
