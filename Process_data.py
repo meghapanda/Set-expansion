@@ -2,7 +2,7 @@ from collections import defaultdict
 import json
 import gzip
 
-debug = False
+debug = True
 lineNum = 1000
 def processBingData():
 	global debug
@@ -18,9 +18,9 @@ def processBingData():
 		line = line.split('\t')
 		d_word_list[line[0]].append(line[1].strip())
 		try:
-			word_list[line[0]].append(line[1])
+			word_list[line[1].strip()].append(line[0])
 		except:
-			word_list[line[0]] = [line[1]]
+			word_list[line[1].strip()] = [line[0]]
 	if debug:
 		with open("word_list_100.json",'w',) as f:
 			json.dump(d_word_list, f,sort_keys=True, indent=4)
@@ -54,5 +54,5 @@ def processWikiData():
 	with open("wiki_list.txt",'w+') as f:
 		f.write(json.dumps(word_list, sort_keys=True, indent=4))
 if __name__ == "__main__":
-	#processBingData()
-	processWikiData()
+	processBingData()
+	#processWikiData()

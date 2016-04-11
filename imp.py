@@ -4,15 +4,16 @@ from skimage.filters import threshold_otsu
 import math
 import timeit
 from scipy.spatial.distance import cosine
-#file loading
-file=open("word_list_100.json")
+
+file = open("word_list_100.json")
 json1_str = file.read()
 word_list=json.loads(json1_str)
-
+file.close()
 file=open("list_100.json")
 json1_str = file.read()
 elist=json.loads(json1_str)
-
+file.close()
+x = True
 # Jaccard similarity
 def jaccardSimilarity(term1,term2):
 	num=len(set(term1).intersection(set(term2)))
@@ -34,14 +35,15 @@ def relevance(set1,set2):
 	for i in range(len(set1)):
 		for j in range(len(set2)):
 			score_temp += jaccardSimilarity(word_list[set1[i]],word_list[set2[j]])
-	rel_score=score_temp / (len_set1*len_set1)
+	rel_score = score_temp / (len(set1)*len(set2))
 
 	return rel_score
 
 def get_K(rel_score_temp):
 	Threshold = threshold_otsu(rel_score_temp)
 	Threshold = round(Threshold,2)
-	K = sum(rel_score_temp>=Threshold)
+	print("Threshold:",Threshold,len(rel_score_temp))
+	K = len(filter(lambda x:x > Threshold,rel_score_temp))
 	return K
 
 def get_relevance(word_list,seed_set):
@@ -53,10 +55,11 @@ def get_relevance(word_list,seed_set):
 def create_data(term_set):
 	data=[]
 	data_term=[]
-	for index in range(0,len(term_set)):
-		data=set(data).union(set(word_list[term_set[index]]))
-	data=list(data)
+	for term in term_set:
+		data = set(data).union(set(word_list[term]))
+	data = list(data)
 	for index in range(0,len(data)):
+		#print(index)
 		data_term=set(data_term).union(set(elist[data[index]]))
 	data_term=list(data_term)
 
@@ -68,6 +71,7 @@ def get_data(K,seed_set):
 	data_new=seed_set
 	len_data=len(data_new)
 	while len(data_new) < K:
+		#print(len(data_new))
 		data_new = create_data(data_new)
 
 	return data_new
@@ -96,7 +100,7 @@ def static_thresholding(data,seed_set,K):
 			sim=relevance(R_old,[data.keys()[index]])
 			temp=alpha*rel_score[index]+(1-alpha)*sim
 			g_term.append(temp)
-
+		print(g_term)
 		sorted_term_g = np.argsort(g_term)[::-1]
 		for index in range(0,K):
 			R_new.append(data.keys()[ sorted_term_g[index]])
@@ -116,18 +120,21 @@ def static_thresholding(data,seed_set,K):
 
 def main():
 	# seed_set=raw_input("Please Enter your seed set with tab in between each seed")
-	K_input=2
+	#file loading
+
+
+	K_input=3
 	seed_set=['galsen f olle','gals3n92','galstyle']
-	seed_set=seed_set.split("\t")
 	data={}
-	with open("word_list_100.json", "r") as f:
-		word_list = json.loads(f.read())
 	rel_score = get_relevance(word_list,seed_set)
 	print(rel_score)
 	sorted_term_rel = np.argsort(rel_score)[::-1]
+	print(sorted_term_rel)
 	rel_score_temp = np.array(rel_score).round(2)
+	print(rel_score_temp)
 	K = get_K(rel_score_temp)
-	data_temp=get_data(K,seed_set)
+	print("K:", K)
+	data_temp = get_data(K,seed_set)
 	for i in data_temp:
 		data[i]=word_list[i]
 
