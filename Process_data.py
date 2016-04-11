@@ -18,9 +18,9 @@ def processBingData():
 		line = line.split('\t')
 		d_word_list[line[0]].append(line[1].strip())
 		try:
-			word_list[line[0]].append(line[2])
+			word_list[line[0]].append(line[1])
 		except:
-			word_list[line[0]] = [line[2]]
+			word_list[line[0]] = [line[1]]
 	if debug:
 		json.dump(d_word_list, open("word_list_100.json",'w',),sort_keys=True, indent=4)
 		json.dump(word_list, open("list_100.json",'w'),sort_keys=True, indent=4)
