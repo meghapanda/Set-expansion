@@ -17,7 +17,10 @@ def processBingData():
 		lineCounter += 1
 		line = line.split('\t')
 		d_word_list[line[0]].append(line[1].strip())
-		word_list[line[0]] = line[1:]
+		try:
+			word_list[line[0]].append(line[2])
+		except:
+			word_list[line[0]] = [line[2]]
 	if debug:
 		json.dump(d_word_list, open("word_list_100.json",'w',),sort_keys=True, indent=4)
 		json.dump(word_list, open("list_100.json",'w'),sort_keys=True, indent=4)
@@ -28,6 +31,7 @@ def processWikiData():
 	file = "full_list_clean.txt"
 	inveredTable = {}
 	lineCounter = 0
+	word_list = {}
 	with open(file) as f:
 		for line in f:
 			if debug and lineCounter >= lineNum: break
@@ -40,8 +44,11 @@ def processWikiData():
 					inveredTable[elem.strip()].append(list_id)
 				except:
 					inveredTable[elem.strip()] = [list_id]
-	with open("full_list_inverted_table.txt",'w+') as f:
-		f.write(json.dumps(inveredTable,sort_keys=True, indent=4))
+			word_list[list_id] = elems[1:]
+	with open("wiki_word_list.txt",'w+') as f:
+		f.write(json.dumps(inveredTable, sort_keys=True, indent=4))
+	with open("wiki_list.txt",'w+') as f:
+		f.write(json.dumps(word_list, sort_keys=True, indent=4))
 if __name__ == "__main__":
 	processBingData()
 	#processWikiData()
