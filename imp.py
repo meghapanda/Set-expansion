@@ -5,11 +5,11 @@ import math
 import timeit
 from scipy.spatial.distance import cosine
 #file loading
-file=open("word_list.txt")
+file=open("word_list_100.json")
 json1_str = file.read()
 word_list=json.loads(json1_str)
 
-file=open("list.txt")
+file=open("list_100.json")
 json1_str = file.read()
 elist=json.loads(json1_str)
 
@@ -117,7 +117,7 @@ def static_thresholding(data,seed_set,K):
 def main():
 	# seed_set=raw_input("Please Enter your seed set with tab in between each seed")
 	K_input=2
-	seed_set='a\tg'
+	seed_set=['galsen f olle','gals3n92','galstyle']
 	seed_set=seed_set.split("\t")
 	data={}
 	with open("word_list_100.json", "r") as f:
