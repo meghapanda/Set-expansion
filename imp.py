@@ -67,9 +67,8 @@ def create_data(term_set):
 def get_data(K,seed_set):
 	data_new=seed_set
 	len_data=len(data_new)
-	while K>len_data:
-		data_new=create_data(data_new)
-		len_data=len(data_new)
+	while len(data_new) < K:
+		data_new = create_data(data_new)
 
 	return data_new
 
@@ -121,13 +120,13 @@ def main():
 	seed_set='a\tg'
 	seed_set=seed_set.split("\t")
 	data={}
-	with open("word_list.txt") as f:
+	with open("word_list_100.json", "r") as f:
 		word_list = json.loads(f.read())
 	rel_score = get_relevance(word_list,seed_set)
 	print(rel_score)
 	sorted_term_rel = np.argsort(rel_score)[::-1]
 	rel_score_temp = np.array(rel_score).round(2)
-	K=get_K(rel_score_temp)
+	K = get_K(rel_score_temp)
 	data_temp=get_data(K,seed_set)
 	for i in data_temp:
 		data[i]=word_list[i]
