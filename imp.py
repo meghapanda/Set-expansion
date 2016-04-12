@@ -3,7 +3,7 @@ import numpy as np
 from skimage.filters import threshold_otsu
 import math
 import timeit
-from scipy.spatial.distance import cosine
+from scipy.spatial.distance import cosine,jaccard
 import multiprocessing as mp
 from multiprocessing import Pool
 file = open("word_list_ALL.json")
@@ -18,10 +18,12 @@ print('data Reading Done')
 x = True
 # Jaccard similarity
 def jaccardSimilarity(term1,term2):
-	num=len(set(term1).intersection(set(term2)))
-	den=len(set(term1).union(set(term2)))
-	sim_score=float(num)/float(den)
-	return sim_score
+	term1Set = set(term1)
+	term2Set = set(terms)
+	unionSet = list(term1Set + term2Set);
+	a = map(lambda x: 1 if x in term1Set else 0, unionSet)
+	b = map(lambda x: 1 if x in term1Set else 0, unionSet)
+	return jaccard(a,b)
 
 # cosin similarity
 def cosSimilarity(term1,term2):
