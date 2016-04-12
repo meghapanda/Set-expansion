@@ -4,12 +4,13 @@ from skimage.filters import threshold_otsu
 import math
 import timeit
 from scipy.spatial.distance import cosine
+import multiprocessing as mp
 
-file = open("word_list_ALL.json")
+file = open("word_list_100.json")
 json1_str = file.read()
 word_list=json.loads(json1_str)
 file.close()
-file=open("list_ALL.json")
+file=open("list_100.json")
 json1_str = file.read()
 elist=json.loads(json1_str)
 file.close()
@@ -43,12 +44,12 @@ def similarity(term1,term2):
 def relevance(set1,set2):
 	len_set1=len(set1)
 	len_set2=len(set2)
-	score_temp=0
-	for i in range(0,len_set1):
-		for j in range(0,len_set2):
-			score_temp=score_temp + jaccardSimilarity(word_list[set1[i]],word_list[set2[j]])
-	rel_score=score_temp/(len_set1*len_set1)
-
+	score_temp=
+	for i in len_set1:
+		a = word_list[i]
+		socre_list = map(lambda x:jaccardSimilarity(a,word_list[x]),len_set2)
+		score_temp += sum(socre_list)
+	rel_score = score_temp / (len_set1*len_set1)
 	return rel_score
 
 
@@ -56,9 +57,13 @@ def relevance(set1,set2):
 def get_K(seed_set):
 	print("Begin Get K")
 	rel_score=[]
-	for index in range(0,len(word_list.keys())):
-		print(str(index)+"/" +str(len(word_list.keys()))
-		rel_score.append(relevance(seed_set,[word_list.keys()[index]]))
+	p = Pool(8)
+	def g(x,y = seed_set):
+		return relevance(y,x)
+	rel_score = p.map(g, word_list.keys())
+	#for index in range(0,len(word_list.keys())):
+	#	print(str(index)+"/" +str(len(word_list.keys()))
+	#	rel_score.append(relevance(seed_set,[word_list.keys()[index]]))
 	rel_score_temp=np.array(rel_score).round(2)
 	Threshold = threshold_otsu(rel_score_temp)
 	Threshold=round(Threshold,2)
