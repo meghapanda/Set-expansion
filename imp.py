@@ -19,7 +19,7 @@ x = True
 # Jaccard similarity
 def jaccardSimilarity(term1,term2):
 	term1Set = set(term1)
-	term2Set = set(terms)
+	term2Set = set(term2)
 	unionSet = list(term1Set + term2Set);
 	a = map(lambda x: 1 if x in term1Set else 0, unionSet)
 	b = map(lambda x: 1 if x in term1Set else 0, unionSet)
