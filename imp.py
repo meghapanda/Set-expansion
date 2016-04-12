@@ -54,8 +54,10 @@ def relevance(set1,set2):
 
 
 def get_K(seed_set):
+	print("Begin Get K")
 	rel_score=[]
 	for index in range(0,len(word_list.keys())):
+		print(str(index)+"/" +str(len(word_list.keys()))
 		rel_score.append(relevance(seed_set,[word_list.keys()[index]]))
 	rel_score_temp=np.array(rel_score).round(2)
 	Threshold = threshold_otsu(rel_score_temp)
@@ -114,9 +116,9 @@ def static_thresholding(data,seed_set,K):
 		for index in range(0,K):
 			R_new.append(data.keys()[ sorted_term_g[index]])
 		if (R_new!=R_old) and (set(R_new)-set(R_old))  :
-			r=list(set(R_new)-set(R_old))[0]
-			q=R_old[-1]
-			R_new_temp=(set(R_old).union(set(r))-set(q))
+			r = list(set(R_new)-set(R_old))[0]
+			q = R_old[-1]
+			R_new_temp = (set(R_old).union(set(r))-set(q))
 			R_old=list(R_new_temp)
 		else:
 			R_old=R_new
